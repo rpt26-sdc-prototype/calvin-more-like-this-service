@@ -42,7 +42,7 @@ const newEntry = (id, tags = [], similarGames = []) => {
       tags: tags,
       similarGames: similarGames
     }
-  )
-}
+  );
+};
 
 module.exports = {Game, retrieveGameAtId, newEntry};

@@ -109,10 +109,10 @@ const getData = async (page) => {
   return data;
 };
 
-const newEntry = (tags) => {
+const newSimilar = (tags) => {
   // call database to look for similar entries based on tags
   // create an array of @10 other games with similar tags
   // return array
 }
 
-module.exports = {getData, newEntry};
+module.exports = {getData, newSimilar};
