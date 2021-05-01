@@ -45,4 +45,31 @@ const newEntry = (id, tags = [], similarGames = []) => {
   );
 };
 
-module.exports = {Game, retrieveGameAtId, newEntry};
+const updateAdd = (id, item) => {
+  Game.updateOne(
+    {"id": id},
+    {$push: {"similarGames": item}}
+  )
+  .then(result => {
+    console.log(result);
+  });
+};
+
+const updateDelete = (id, item) => {
+  Game.updateOne(
+    {"id": id},
+    {$pull: {"similarGames": item}}
+  )
+  .then(result => {
+    console.log(result);
+  });
+}
+
+const deleteEntry = (id) => {
+  Game.deleteOne({"id": id})
+  .then(result => {
+    console.log(result);
+  });
+}
+
+module.exports = {Game, retrieveGameAtId, newEntry, updateAdd, updateDelete, deleteEntry};

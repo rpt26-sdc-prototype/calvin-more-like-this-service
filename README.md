@@ -80,4 +80,23 @@ Expected data: JSON object
   similarGames: [integers]
 }
 
+PUT /morelikethis
+Used to update the array of similar game IDs
+When updating, will need to clarify if an item is being removed from (r) or added to (a) the similarGames array
+Expected data: JSON object
+{
+  id: integer,
+  action: string (r for remove or a for add),
+  item: integer (id for the item to be removed or added from the array)
+}
+
+DELETE /morelikethis
+Used when a game is removed from steam
+Expected input: JSON object
+{
+  id: integer (the game ID to be removed)
+}
+
+
+
 Send back success or error
