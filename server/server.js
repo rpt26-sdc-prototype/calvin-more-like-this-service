@@ -6,6 +6,12 @@ const { retrieveGameAtId } = require('../database/index.js');
 const { getData } = require('./helper.js');
 const { newSimilar } = require('.helper.js');
 const { newEntry } = require('../database/index.js');
+const { updateAdd } = require('../database/index.js');
+const { updateDelete } = require('../database/index.js');
+const { deleteEntry } = require('../database/index.js');
+
+
+
 
 const app = express();
 app.use(cors());
@@ -66,6 +72,20 @@ app.post('/morelikethis', (req, res) => {
     newEntry(req.params.id, req.params.tags, similarGames);
   })
   .catch(err => console.log('error with adding new game information:', err));
+});
+
+app.put('/morelikethis', (req, res) => {
+  if (req.params.action === 'r') {
+    updateDelete(req.params.id, req.params.item);
+  } else if (req.params.action === 'a') {
+    updateAdd(req.params.id, req.params.item);
+  } else {
+    console.err('Update not specified. Please clarify if you are removing or adding an item.')
+  }
+});
+
+app.delete('/morelikethis', (req, res) => {
+  deleteEntry(req.params.id);
 })
 
 

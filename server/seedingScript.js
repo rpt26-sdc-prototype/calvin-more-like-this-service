@@ -74,7 +74,8 @@ const seedGames = async () => {
     process.exit();
   }, 1000);
 };
-
+console.time('seed');
 seedGames();
+console.timeEnd('seed');
 
 module.exports = {tagsArray, createRandomTags, seedGames};
