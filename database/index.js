@@ -3,10 +3,10 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-let MONGO_URI = 'mongodb://mongo:27017/steam';
+let MONGO_URI = 'mongodb://localhost:27017/steam';
 
 if (process.env.NODE_ENV === 'development') {
-  MONGO_URI = 'mongodb://localhost/steam';
+  MONGO_URI = 'mongodb://localhost:27017/steam';
 }
 
 mongoose.connect(MONGO_URI, {
@@ -34,4 +34,15 @@ const retrieveGameAtId = (id) => {
   return Game.find({id: id});
 };
 
-module.exports = {Game, retrieveGameAtId};
+// post game function
+const newEntry = (id, tags = [], similarGames = []) => {
+  Game.insertOne(
+    {
+      id: id,
+      tags: tags,
+      similarGames: similarGames
+    }
+  )
+}
+
+module.exports = {Game, retrieveGameAtId, newEntry};

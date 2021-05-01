@@ -16,8 +16,12 @@ class MoreLikeThis extends React.Component {
 
   async getGames() {
     let id = window.location.pathname.substring(1);
+    // console.log('hello')
+    // console.log('id', id)
+    console.log(new Date().toUTCString(), 'getGames called')
     await axios.get(`/morelikethis/${id}`)
       .then(games => {
+        console.log(new Date().toUTCString(), 'getGames returned');
         this.setState({games: games.data});
       });
   }

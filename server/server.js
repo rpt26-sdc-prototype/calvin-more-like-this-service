@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const { retrieveGameAtId } = require('../database/index.js');
 const getData = require('./helper.js');
+const { newEntry } = require('../database/index.js');
 
 const app = express();
 app.use(cors());
@@ -36,6 +37,7 @@ app.get('/morelikethis/:id', async (req, res) => {
     // retrieve tags from my database
     await retrieveGameAtId(id)
       .then(results => {
+        console.log('results[0].similarGames', results[0].similarGames)
         if (!results) {
           res.status(404).end();
         } else {
@@ -50,11 +52,19 @@ app.get('/morelikethis/:id', async (req, res) => {
         for (let i = 0; i < similarGames.length; i++) {
           similarGamesData.push(await getData(similarGames[i]));
         }
+        console.log(similarGamesData);
         res.status(200).send(similarGamesData);
       })
       .catch(err => console.log('GET request error.', err));
   }
 });
+
+app.post('/morelikethis', (req, res) => {
+
+  // send info to the database
+  // cb success: send success message
+  // cb error: send error message
+})
 
 
 module.exports = {app};
