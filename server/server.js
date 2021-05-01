@@ -3,7 +3,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { retrieveGameAtId } = require('../database/index.js');
-const getData = require('./helper.js');
+const { getData } = require('./helper.js');
+const { newSimilar } = require('.helper.js');
 const { newEntry } = require('../database/index.js');
 
 const app = express();
@@ -60,10 +61,11 @@ app.get('/morelikethis/:id', async (req, res) => {
 });
 
 app.post('/morelikethis', (req, res) => {
-
-  // send info to the database
-  // cb success: send success message
-  // cb error: send error message
+  newSimilar(req.params.tags)
+  .then((similarGames) => {
+    newEntry(req.params.id, req.params.tags, similarGames);
+  })
+  .catch(err => console.log('error with adding new game information:', err));
 })
 
 
