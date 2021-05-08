@@ -43,6 +43,7 @@
     "lorem-ipsum": "^2.0.3",
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.18",
+    "mysql": "^2.18.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "styled-components": "^4.4.1"
