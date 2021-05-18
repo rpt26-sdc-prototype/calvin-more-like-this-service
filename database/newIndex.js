@@ -21,13 +21,13 @@ const createCSVmongo = async () => {
   console.timeEnd('seedMongo');
 };
 
-const mysqlStream = fs.createWriteStream('mysql.csv');
-var dataSet = 'id,tag0,tag1,tag2,tag3,tag4,similar0,similar1,similar2,similar3,similar4,similar5,similar6,similar7,similar8,similar9\n';
-mysqlStream.write(dataSet, 'utf8');
+// const mysqlStream = fs.createWriteStream('mysql.csv');
+// var dataSet = 'id,tag0,tag1,tag2,tag3,tag4,similar0,similar1,similar2,similar3,similar4,similar5,similar6,similar7,similar8,similar9\n';
+// mysqlStream.write(dataSet, 'utf8');
 
-const mongoStream = fs.createWriteStream('mongo.csv');
-var dataMongo = 'id,tags,similar\n';
-mongoStream.write(dataMongo, 'utf8');
+// const mongoStream = fs.createWriteStream('mongo.csv');
+// var dataMongo = 'id,tags.0,tags.1,tags.2,tags.3,tags.4,similar.0,similar.1,similar.2,similar.3,similar.4,similar.5,similar.6,similar.7,similar.8,similar.9\n';
+// mongoStream.write(dataMongo, 'utf8');
 
 const createCSVmysqlDrain = async (writer, encoding, cb) => {
   console.time('createCSVmysqlDrain');
@@ -121,6 +121,31 @@ const createCSVgames = async (cb) => {
   console.timeEnd('games');
   // cb();
 };
+
+const createCSVgamesDrain = async (writer, encoding, cb) => {
+  console.time('createCSVgamesDrain');
+  var i = 0;
+  write();
+  function write() {
+    let ok = true;
+    do {
+      i++;
+      var tags = createRandomTags(tagsArray);
+      tags = tags.tagIndices;
+      var similar = createRandomConnections(dataAmount, i);
+      var data = `${i},${tags[0]},${tags[1]},${tags[2]},${tags[3]},${tags[4]},${similar[0]},${similar[1]},${similar[2]},${similar[3]},${similar[4]},${similar[5]},${similar[6]},${similar[7]},${similar[8]},${similar[9]}\n`;
+      if (i === dataAmount) {
+        writer.write(data, encoding, cb);
+        console.timeEnd('createCSVgamesDrain');
+      } else {
+        ok = writer.write(data, encoding);
+      }
+    } while (i < dataAmount && ok);
+    if (i < dataAmount) {
+      writer.once('drain', write);
+    }
+  }
+}
 
 const createCSVtags = async (cb) => {
   writeDoc.pipe(fs.createWriteStream('./tags.csv'));
