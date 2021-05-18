@@ -3,9 +3,7 @@ const csv = require('csv-write-stream');
 const writeDoc = csv();
 const {createRandomTags, createRandomConnections, tagsArray} = require('./tags_connections.js');
 
-var dataAmount = 1000000;
-
-
+var dataAmount = 1e7;
 
 const createCSVmongo = async () => {
   console.time('seedMongo');
@@ -23,6 +21,35 @@ const createCSVmongo = async () => {
   console.timeEnd('seedMongo');
 };
 
+const mysqlStream = fs.createWriteStream('mysql.csv');
+var dataSet = 'id,tag0,tag1,tag2,tag3,tag4,similar0,similar1,similar2,similar3,similar4,similar5,similar6,similar7,similar8,similar9\n';
+mysqlStream.write(dataSet, 'utf8');
+
+const createCSVmysqlDrain = async (writer, encoding, cb) => {
+  console.time('createCSVmysqlDrain');
+  var i = 0;
+  write();
+  function write() {
+    let ok = true;
+    do {
+      i++;
+      var tags = createRandomTags(tagsArray);
+      tags = tags.tagIndices;
+      var similar = createRandomConnections(dataAmount, i);
+      var data = `${i},${tags[0]},${tags[1]},${tags[2]},${tags[3]},${tags[4]},${similar[0]},${similar[1]},${similar[2]},${similar[3]},${similar[4]},${similar[5]},${similar[6]},${similar[7]},${similar[8]},${similar[9]}\n`;
+      if (i === dataAmount) {
+        writer.write(data, encoding, cb);
+        console.timeEnd('createCSVmysqlDrain');
+      } else {
+        ok = writer.write(data, encoding);
+      }
+    } while (i < dataAmount && ok);
+    if (i < dataAmount) {
+      writer.once('drain', write);
+    }
+  }
+}
+
 const createCSVmysql = async () => {
   console.time('seedMySQL');
   writeDoc.pipe(fs.createWriteStream('mysql.csv'));
@@ -32,11 +59,11 @@ const createCSVmysql = async () => {
     var similar = createRandomConnections(dataAmount, i);
     writeDoc.write({
       id: i,
-      tag1: tags[0],
-      tag2: tags[1],
-      tag3: tags[2],
-      tag4: tags[3],
-      tag5: tags[4],
+      tag0: tags[0],
+      tag1: tags[1],
+      tag2: tags[2],
+      tag3: tags[3],
+      tag4: tags[4],
       similar0: similar[0],
       similar1: similar[1],
       similar2: similar[2],
@@ -118,5 +145,6 @@ module.exports = {
   createCSVgames_tags,
   createCSVsimilar,
   createCSVtags,
-  createCSVmysql
+  createCSVmysql,
+  createCSVmysqlDrain
 };
