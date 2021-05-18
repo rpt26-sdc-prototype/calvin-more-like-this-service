@@ -130,10 +130,7 @@ const createCSVgamesDrain = async (writer, encoding, cb) => {
     let ok = true;
     do {
       i++;
-      var tags = createRandomTags(tagsArray);
-      tags = tags.tagIndices;
-      var similar = createRandomConnections(dataAmount, i);
-      var data = `${i},${tags[0]},${tags[1]},${tags[2]},${tags[3]},${tags[4]},${similar[0]},${similar[1]},${similar[2]},${similar[3]},${similar[4]},${similar[5]},${similar[6]},${similar[7]},${similar[8]},${similar[9]}\n`;
+      var data = `${i}\n`;
       if (i === dataAmount) {
         writer.write(data, encoding, cb);
         console.timeEnd('createCSVgamesDrain');
