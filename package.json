@@ -15,7 +15,8 @@
     "dev": "NODE_ENV=development nodemon ./server/index.js",
     "seed": "node server/seedingScript.js",
     "start": "node ./server/index.js",
-    "test": "jest --coverage --detectOpenHandles ./spec"
+    "test": "jest --coverage --detectOpenHandles ./spec",
+    "newSeed": "node ./database/seedTags.js"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
@@ -38,10 +39,16 @@
   "dependencies": {
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
+    "cassandra-driver": "^4.6.2",
     "cors": "^2.8.5",
+    "cql": "^0.0.9",
+    "csv-write-stream": "^2.0.0",
+    "csvtojson": "^2.0.10",
     "express": "^4.17.1",
+    "fast-csv": "^4.3.6",
     "lorem-ipsum": "^2.0.3",
     "mongodb": "^3.6.4",
+    "mongoimport": "^1.0.6",
     "mongoose": "^5.11.18",
     "mysql": "^2.18.1",
     "react": "^17.0.1",

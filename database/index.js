@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
+
+
 dotenv.config();
 
 let MONGO_URI = 'mongodb://localhost:27017/steam';
@@ -29,6 +31,25 @@ const moreLikeThisSchema = new mongoose.Schema({
 });
 
 const Game = mongoose.model('Game', moreLikeThisSchema);
+
+const insertCSV = () => {
+
+
+};
+
+// const bulkInsert = (arrayGames) => {
+//   var bulk = db.games.initializeOrderedBulkOp();
+//   for (var i = 0; i < arrayGames.length; i++) {
+//     bulk.insert(arrayGames[i]);
+//   }
+//   bulk.execute();
+// }
+
+const bulkInsert = async (arrayGames, cb) => {
+  // console.log('running')
+  await Game.insertMany(arrayGames);
+  cb();
+}
 
 const retrieveGameAtId = (id) => {
   return Game.find({id: id});
@@ -72,4 +93,4 @@ const deleteEntry = (id) => {
   });
 }
 
-module.exports = {Game, retrieveGameAtId, newEntry, updateAdd, updateDelete, deleteEntry};
+module.exports = {Game, retrieveGameAtId, newEntry, updateAdd, updateDelete, deleteEntry, bulkInsert, insertCSV};

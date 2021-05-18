@@ -1,10 +1,14 @@
 //// MONGO ////
 const { Game } = require('../database/index.js');
 const LoremIpsum = require('lorem-ipsum').LoremIpsum;
-const { bulkInsert } = require('../database/index.js');
+// const { bulkInsert } = require('../database/index.js');
 
 //// MYSQL ////
-// const { bulkInsert } = require('../database/mysql/mysqlindex.js');
+const { bulkInsert, newGame } = require('../database/mysql/mysqlindex.js');
+
+
+
+
 
 
 // 62 random words that will be used for 'tags' in database
@@ -44,27 +48,23 @@ const createRandomConnections = (max, exclude) => {
 const seedGames = async (min, max) => {
   console.log('Begin seeding database...');
   console.time('actualSeedTime');
+  // console.log('running with min and max ', min, max)
 
   var games = [];
-  for (let i = min; i <= max; i++) {
-    let gameEntry = {
-      id: i,
-      tags: createRandomTags(tagsArray),
-      similarGames: createRandomConnections(max, i)
-    };
-    games.push(gameEntry);
-  }
-  await bulkInsert(games, () => {
-    console.log('callback');
-    // if (max < 100000) {
-    //   console.log('max: ', max);
-    //   min += 10000;
-    //   max += 10000;
-    //   console.log('min, max:', min, max);
-    //   seedGames(min, max);
-    //   console.log('skipped function?');
-    // }
-  });
+    for (let i = min; i <= max; i++) {
+      console.log('i', i)
+      let gameEntry = {
+        id: i,
+        tags: createRandomTags(tagsArray),
+        similarGames: createRandomConnections(max, i)
+      };
+      // newGame(gameEntry.id, gameEntry.tags, gameEntry.similarGames);
+      // games.push(gameEntry);
+    }
+    console.log('here');
+    // await bulkInsert(games, () => {
+    //   console.log('callback');
+    // });
 
   setTimeout(() => {
     console.log('Finished seeding');
@@ -72,27 +72,6 @@ const seedGames = async (min, max) => {
     process.exit();
   }, 1000);
 };
-
-var seedLots = async (total) => {
-  var min = 1;
-  var max = 10000;
-  console.log('max', max);
-  console.log('total', total);
-  while (max < total) {
-    console.log('max', max);
-    await seedGames(min, max);
-    min += 10000;
-    max += 10000;
-  }
-}
-
-// seedGames(1, 10000);
-// seedLots(100000);
-
-
-module.exports = {tagsArray, createRandomTags, seedGames};
-
-
 
 // var seedLots = async (total) => {
 //   // console.time('actualSeedTime');
@@ -124,6 +103,19 @@ module.exports = {tagsArray, createRandomTags, seedGames};
   // });
 
 // }
+seedGames(1, 20)
+// .then(results => {
+//   seedGames(1001, 2000);
+// })
+// .then(results => {
+//   seedGames(2001, 3000);
+// })
+
+
+module.exports = {tagsArray, createRandomTags, seedGames};
+
+
+
 
 // var min = 1;
 // var max = 1000;
