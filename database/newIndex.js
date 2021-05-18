@@ -25,6 +25,10 @@ const mysqlStream = fs.createWriteStream('mysql.csv');
 var dataSet = 'id,tag0,tag1,tag2,tag3,tag4,similar0,similar1,similar2,similar3,similar4,similar5,similar6,similar7,similar8,similar9\n';
 mysqlStream.write(dataSet, 'utf8');
 
+const mongoStream = fs.createWriteStream('mongo.csv');
+var dataMongo = 'id,tags,similar\n';
+mongoStream.write(dataMongo, 'utf8');
+
 const createCSVmysqlDrain = async (writer, encoding, cb) => {
   console.time('createCSVmysqlDrain');
   var i = 0;
@@ -40,6 +44,31 @@ const createCSVmysqlDrain = async (writer, encoding, cb) => {
       if (i === dataAmount) {
         writer.write(data, encoding, cb);
         console.timeEnd('createCSVmysqlDrain');
+      } else {
+        ok = writer.write(data, encoding);
+      }
+    } while (i < dataAmount && ok);
+    if (i < dataAmount) {
+      writer.once('drain', write);
+    }
+  }
+}
+
+const createCSVmongoDrain = async (writer, encoding, cb) => {
+  console.time('createCSVmongoDrain');
+  var i = 0;
+  write();
+  function write() {
+    let ok = true;
+    do {
+      i++;
+      var tags = createRandomTags(tagsArray);
+      tags = tags.tagNames;
+      var similar = createRandomConnections(dataAmount, i);
+      var data = `${i},${tags},${similar}\n`;
+      if (i === dataAmount) {
+        writer.write(data, encoding, cb);
+        console.timeEnd('createCSVmongoDrain');
       } else {
         ok = writer.write(data, encoding);
       }
@@ -146,5 +175,6 @@ module.exports = {
   createCSVsimilar,
   createCSVtags,
   createCSVmysql,
-  createCSVmysqlDrain
+  createCSVmysqlDrain,
+  createCSVmongoDrain
 };

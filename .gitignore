@@ -1,6 +1,9 @@
 ## MAC files ##
 .DS_Store
 *.csv
+## Why won't the mongo csv ignore?? ##
+database/mongo.csv
+database/mysql.csv
 
 ## NPM ##
 npm
