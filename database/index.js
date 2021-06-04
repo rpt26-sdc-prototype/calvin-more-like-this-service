@@ -27,7 +27,7 @@ db.once('open', function() {
 const moreLikeThisSchema = new mongoose.Schema({
   id: {type: Number, unique: true},
   tags: [String],
-  similarGames: [Number]
+  similar: [Number]
 });
 
 const Game = mongoose.model('Game', moreLikeThisSchema);
@@ -52,7 +52,7 @@ const bulkInsert = async (arrayGames, cb) => {
 }
 
 const retrieveGameAtId = (id) => {
-  return Game.find({id: id});
+  return Game.findOne({id: id});
 };
 
 // post game function
@@ -61,7 +61,7 @@ const newEntry = (id, tags = [], similarGames = []) => {
     {
       id: id,
       tags: tags,
-      similarGames: similarGames
+      similar: similar
     }
   );
 };
@@ -69,7 +69,7 @@ const newEntry = (id, tags = [], similarGames = []) => {
 const updateAdd = (id, item) => {
   Game.updateOne(
     {"id": id},
-    {$push: {"similarGames": item}}
+    {$push: {"similar": item}}
   )
   .then(result => {
     console.log(result);
@@ -79,7 +79,7 @@ const updateAdd = (id, item) => {
 const updateDelete = (id, item) => {
   Game.updateOne(
     {"id": id},
-    {$pull: {"similarGames": item}}
+    {$pull: {"similar": item}}
   )
   .then(result => {
     console.log(result);
