@@ -1,0 +1,50 @@
+mongo:
+
+> db.games.findOne({id:9999999})
+{
+        "_id" : ObjectId("60a3f88d4b09542e9e070274"),
+        "id" : 9999999,
+        "tags" : [
+                "et",
+                "amet",
+                "est",
+                "minim",
+                "incididunt"
+        ],
+        "similar" : [
+                7480083,
+                6034541,
+                695095,
+                9256072,
+                2750265,
+                7392913,
+                954730,
+                6193323,
+                9103363,
+                6474936
+        ]
+}
+
+mySQL:
+
+mysql> select * from games where id = 9999999;
++---------+
+| id      |
++---------+
+| 9999999 |
++---------+
+1 row in set (0.01 sec)
+
+mysql> select * from games_tags where game = 9999999;
++----------+---------+------+
+| id       | game    | tag  |
++----------+---------+------+
+| 49999991 | 9999999 |   31 |
+| 49999992 | 9999999 |    3 |
+| 49999993 | 9999999 |   15 |
+| 49999994 | 9999999 |   53 |
+| 49999995 | 9999999 |   42 |
++----------+---------+------+
+5 rows in set (0.03 sec)
+
+Cannot pull similar games until CSV loads into database

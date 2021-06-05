@@ -1,16 +1,30 @@
+const newrelic = require('newrelic');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { retrieveGameAtId } = require('../database/index.js');
 const { getData } = require('./helper.js');
-const { newSimilar } = require('.helper.js');
+const { newSimilar } = require('./helper.js');
 const { newEntry } = require('../database/index.js');
 const { updateAdd } = require('../database/index.js');
 const { updateDelete } = require('../database/index.js');
 const { deleteEntry } = require('../database/index.js');
+const { newID } = require('../database/index.js');
 
 
+
+
+const dummyData = {
+  id: null,
+  title: null,
+  price: null,
+  releaseDate: null,
+  reviewCount: null,
+  reviewRating: null,
+  headerImage: null,
+  gallery: null
+};
 
 
 const app = express();
@@ -38,40 +52,65 @@ app.get('/:id', (req, res) => {
 app.get('/morelikethis/:id', async (req, res) => {
   let id = req.params.id;
 
-  if (id > 100 || id < 0) {
+  // if (id > 100 || id < 0) {
+    if (id > 1000000 || id < 0) {
     res.status(404).end('Game does not exist');
   } else {
     // retrieve tags from my database
+    // altered schema to have 'similar' instead of 'similarGames' and need to adjust everything accordingly
     await retrieveGameAtId(id)
       .then(results => {
-        console.log('results[0].similarGames', results[0].similarGames)
+        console.log('results data:', results.similar)
+        // console.log('results[0].similarGames', results[0].similarGames)
         if (!results) {
           res.status(404).end();
         } else {
-          return results[0].similarGames;
+          return results.similar;
         }
       })
       .catch(err => console.log('Databse query error.', err))
 
       // retrieve teammates data
+      //// can't call if there is no data ////
       .then(async similarGames => {
         let similarGamesData = [];
         for (let i = 0; i < similarGames.length; i++) {
-          similarGamesData.push(await getData(similarGames[i]));
+          ////// placeholder until services are running /////
+          let sampleData = dummyData;
+          sampleData.id = similarGames[i];
+          similarGamesData.push(sampleData);
+          // similarGamesData.push(await getData(similarGames[i]));
         }
-        console.log(similarGamesData);
         res.status(200).send(similarGamesData);
       })
       .catch(err => console.log('GET request error.', err));
   }
 });
 
+// app.post('/morelikethis', (req, res) => {
+//   newSimilar(req.params.tags)
+//   .then((similarGames) => {
+//     newEntry(req.params.id, req.params.tags, similarGames);
+//   })
+//   .catch(err => console.log('error with adding new game information:', err));
+// });
+
 app.post('/morelikethis', (req, res) => {
-  newSimilar(req.params.tags)
-  .then((similarGames) => {
-    newEntry(req.params.id, req.params.tags, similarGames);
-  })
-  .catch(err => console.log('error with adding new game information:', err));
+  // console.log('CALLED');
+  var newGameID;
+  newID((id) => {
+    newGameID = id;
+    console.log('newGameID', newGameID);
+    // console.log('req.body...', req.body.tags.tagNames, req.body.similar)
+    newEntry(newGameID, req.body.tags.tagNames, req.body.similar);
+
+    // return newGameID;
+    })
+  // .then((newid) => {
+  //   console.log('newGameID then:', newid)
+  // })
+  // .catch(err => console.error('error with adding new game information:', err));
+  res.end();
 });
 
 app.put('/morelikethis', (req, res) => {

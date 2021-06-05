@@ -56,8 +56,8 @@ const retrieveGameAtId = (id) => {
 };
 
 // post game function
-const newEntry = (id, tags = [], similarGames = []) => {
-  Game.insertOne(
+const newEntry = (id, tags = [], similar = []) => {
+  Game.create(
     {
       id: id,
       tags: tags,
@@ -93,4 +93,13 @@ const deleteEntry = (id) => {
   });
 }
 
-module.exports = {Game, retrieveGameAtId, newEntry, updateAdd, updateDelete, deleteEntry, bulkInsert, insertCSV};
+const newID = (cb) => {
+  var newIDnum;
+  Game.find().sort({id:-1}).limit(1)
+  .then(result => {
+    newIDnum = result[0].id + 1;
+    cb(newIDnum);
+  })
+}
+
+module.exports = {Game, retrieveGameAtId, newEntry, updateAdd, updateDelete, deleteEntry, bulkInsert, insertCSV, newID};

@@ -23,7 +23,7 @@ const createRandomTags = (tags) => {
   return {tagNames: randomTags, tagIndices: randomTagIndices};
 };
 
-const createRandomConnections = (max, exclude) => {
+const createRandomConnections = (max, exclude = 0) => {
   let randomConnections = [];
   while (randomConnections.length < 10) {
     let randomConnection = Math.floor(Math.random() * max);
