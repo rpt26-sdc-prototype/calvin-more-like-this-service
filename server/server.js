@@ -96,21 +96,19 @@ app.get('/morelikethis/:id', async (req, res) => {
 // });
 
 app.post('/morelikethis', (req, res) => {
-  // console.log('CALLED');
   var newGameID;
-  newID((id) => {
-    newGameID = id;
-    console.log('newGameID', newGameID);
-    // console.log('req.body...', req.body.tags.tagNames, req.body.similar)
-    newEntry(newGameID, req.body.tags.tagNames, req.body.similar);
-
-    // return newGameID;
-    })
-  // .then((newid) => {
-  //   console.log('newGameID then:', newid)
-  // })
-  // .catch(err => console.error('error with adding new game information:', err));
-  res.end();
+  try {
+    newID((id) => {
+      newGameID = id;
+      console.log('newGameID', newGameID);
+      newEntry(newGameID, req.body.tags.tagNames, req.body.similar);
+    });
+    res.end();
+  } catch {
+    console.log('error!');
+    res.end();
+  }
+  // .catch(err => console.log('err'))
 });
 
 app.put('/morelikethis', (req, res) => {
@@ -129,3 +127,26 @@ app.delete('/morelikethis', (req, res) => {
 
 
 module.exports = {app};
+
+
+
+
+
+// app.post('/morelikethis', (req, res) => {
+//   var newGameID;
+//   newID((id) => {
+//     newGameID = id;
+//     console.log('newGameID', newGameID);
+//     newEntry(newGameID, req.body.tags.tagNames, req.body.similar, ( err, result) => {
+//       if (err) {
+//         console.log('error:', err);
+//         res.end();
+//       } else {
+//         console.log('result', result);
+//         res.send(result);
+//       }
+//     });
+//   });
+//   // res.end()
+//   // .catch(err => console.log('err'))
+// });

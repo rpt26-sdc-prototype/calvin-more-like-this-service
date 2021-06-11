@@ -11,3 +11,5 @@ var request = {
 };
 
 axios.post('http://localhost:4022/morelikethis', request);
+
+module.exports = {request};

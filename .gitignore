@@ -4,6 +4,9 @@
 newrelic.js
 newRelicInfo
 
+login.sh
+mongo.sh
+
 ## NPM ##
 npm
 npm-debug.log

@@ -57,13 +57,17 @@ const retrieveGameAtId = (id) => {
 
 // post game function
 const newEntry = (id, tags = [], similar = []) => {
-  Game.create(
-    {
-      id: id,
-      tags: tags,
-      similar: similar
+  var game = new Game({
+    id: id,
+    tags: tags,
+    similar: similar
+  });
+  game.save(function(err) {
+    if (err) {
+      console.log(err);
+      return (err);
     }
-  );
+  });
 };
 
 const updateAdd = (id, item) => {

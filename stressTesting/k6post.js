@@ -15,14 +15,20 @@ export let options = {
   ],
 };
 
-export default function() {
-  const BASE_URL = 'http://localhost:4022'; // make sure this is not production
-  // let response = http.get(BASE_URL);
-  let responses = http.batch([
-    [
-      'GET',
-      `${BASE_URL}/1/`,
-    ],
-  ]);
+export default function () {
+
+  var url = 'http://localhost:4022/morelikethis';
+  var payload = JSON.stringify({
+    tags:[ 'officia', 'irure', 'magna', 'nostrud', 'quis' ],
+    similar:[468078, 2607466, 7021684, 7878965, 9039177, 5951755, 7399813, 7546880, 2985828, 7096522]
+    },
+  );
+  var params = {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  };
+  http.post(url, payload, params);
+
   sleep(1);
 }

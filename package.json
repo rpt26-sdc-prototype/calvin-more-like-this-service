@@ -18,7 +18,8 @@
     "newrelic": "node -r newrelic ./server/index.js",
     "test": "jest --coverage --detectOpenHandles ./spec",
     "newSeed": "node ./database/seedTags.js",
-    "k6": "k6 run stressTesting/k6get.js"
+    "k6get": "k6 run stressTesting/k6get.js",
+    "k6post": "k6 run stressTesting/k6post.js"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
