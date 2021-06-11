@@ -53,7 +53,7 @@ app.get('/morelikethis/:id', async (req, res) => {
   let id = req.params.id;
 
   // if (id > 100 || id < 0) {
-    if (id > 1000000 || id < 0) {
+    if (id > 10000000 || id < 0) {
     res.status(404).end('Game does not exist');
   } else {
     // retrieve tags from my database
@@ -61,7 +61,6 @@ app.get('/morelikethis/:id', async (req, res) => {
     await retrieveGameAtId(id)
       .then(results => {
         console.log('results data:', results.similar)
-        // console.log('results[0].similarGames', results[0].similarGames)
         if (!results) {
           res.status(404).end();
         } else {
@@ -71,15 +70,15 @@ app.get('/morelikethis/:id', async (req, res) => {
       .catch(err => console.log('Databse query error.', err))
 
       // retrieve teammates data
-      //// can't call if there is no data ////
       .then(async similarGames => {
         let similarGamesData = [];
         for (let i = 0; i < similarGames.length; i++) {
           ////// placeholder until services are running /////
-          let sampleData = dummyData;
-          sampleData.id = similarGames[i];
-          similarGamesData.push(sampleData);
-          // similarGamesData.push(await getData(similarGames[i]));
+          // let sampleData = dummyData;
+          // sampleData.id = similarGames[i];
+          // similarGamesData.push(sampleData);
+          //////
+          similarGamesData.push(await getData(similarGames[i]));
         }
         res.status(200).send(similarGamesData);
       })

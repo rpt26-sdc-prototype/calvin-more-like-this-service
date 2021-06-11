@@ -1,6 +1,6 @@
 FROM node:12.18.4
 
-WORKDIR /moreLikeThis
+WORKDIR /calvin-more-like-this-service
 
 COPY package*.json ./
 

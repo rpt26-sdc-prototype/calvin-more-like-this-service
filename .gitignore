@@ -3,6 +3,7 @@
 *.csv
 newrelic.js
 newRelicInfo
+mongo_connection_details
 
 login.sh
 mongo.sh

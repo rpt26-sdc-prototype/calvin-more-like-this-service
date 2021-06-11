@@ -21,15 +21,22 @@ const getData = async (page) => {
   // GET request to Tim's review endpoint
   const getReviewInfo = () => {
     console.log(new Date().toUTCString(), 'getReviewInfo called');
-    return axios.get(`http://18.144.23.11:4052/reviews/${page}`);
+    // return axios.get(`http://18.144.23.11:4052/reviews/${page}`);
+    return axios.get(`http://steammop.app/reviews/${page}`);
   };
   // GET request to Anthony's photo endpoint
   const getPhotoInfo = () => {
     console.log(new Date().toUTCString(), 'getPhotoInfo called');
-    return axios.get(`http://100.24.35.141:4012/images/${page}`);
+    // return axios.get(`http://100.24.35.141:4012/images/${page}`);
+    return axios.get(`http://18.118.17.38/images/${page}`);
+
   };
 
-  await Promise.allSettled([getProductInfo(), getReviewInfo(), getPhotoInfo()])
+  await Promise.allSettled([
+    // getProductInfo(),
+    getReviewInfo(),
+    getPhotoInfo()
+  ])
     .then(results => {
       console.log(new Date().toUTCString(), 'promise all settled')
       // console.log('this is results', results);
@@ -66,8 +73,8 @@ const getData = async (page) => {
             data.price = result.value.data.price;
             data.releaseDate = result.value.data.releaseDate;
 
-          } else if (result.value.config.url.includes('4052')) {
-            console.log(new Date().toUTCString(), 'resolved else if includes 4052')
+          } else if (result.value.config.url.includes('steammop')) {
+            console.log(new Date().toUTCString(), 'reached reviews service')
             data.reviewCount = result.value.data.length;
             let recommended = 0;
             for (let i = 0; i < data.reviewCount; i++) {
@@ -92,8 +99,8 @@ const getData = async (page) => {
               data.reviewRating = 'Overwhelmingly Negative';
             }
 
-          } else if (result.value.config.url.includes('4012')) {
-            console.log(new Date().toUTCString(), 'else if resolved includes 4012')
+          } else if (result.value.config.url.includes('18.118.17.38')) {
+            console.log(new Date().toUTCString(), 'reached photo service')
             data.headerImage = result.value.data[0].headerImage;
             let gallery = result.value.data[0].mainImages.map(image => {
               return image.main;
