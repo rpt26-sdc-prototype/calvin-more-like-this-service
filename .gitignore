@@ -6,6 +6,7 @@ newRelicInfo
 
 login.sh
 mongo.sh
+service.sh
 
 ## NPM ##
 npm

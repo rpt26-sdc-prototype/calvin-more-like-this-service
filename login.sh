@@ -1,1 +1,0 @@
-ssh -i "/Users/cal/Desktop/HackReactor/Sprints/FEC/calvin-more-like-this-service/service.pem" ubuntu@ec2-54-193-16-203.us-west-1.compute.amazonaws.com

@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "webpack --watch",
+    "webpack": "webpack",
     "dev": "NODE_ENV=development nodemon ./server/index.js",
     "seed": "node server/seedingScript.js",
     "start": "node ./server/index.js",
