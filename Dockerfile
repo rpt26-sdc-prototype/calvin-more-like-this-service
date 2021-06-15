@@ -11,6 +11,6 @@ COPY . .
 # EXPOSE 4022
 RUN npm run webpack
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "newrelic"]
 
 # docker run -p 4022:4022 -d --numberhere--
