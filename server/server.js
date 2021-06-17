@@ -45,8 +45,11 @@ app.use((req, res, next) => {
 });
 
 app.get('/loaderio-f6b96c7f918883fd6437d4d3825900ee/', (req, res) => {
-  // res.sendFile('verify.txt');
-  res.sendFile('loaderio-f6b96c7f918883fd6437d4d3825900ee.txt');
+  var options = {
+    root: path.join(__dirname)
+  };
+  var fileName = 'verify.txt';
+  res.sendFile(fileName, options);
 });
 
 app.get('/:id', (req, res) => {
