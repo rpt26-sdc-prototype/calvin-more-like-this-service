@@ -44,6 +44,18 @@ app.use((req, res, next) => {
   next();
 });
 
+// why not working??
+app.get('/', (req, res) => {
+  var firstID = 1;
+  res.redirect(`/${firstID}`);
+})
+
+// allows me to easily test random IDs with loader.io and also for myself
+app.get('/test', (req, res) => {
+  var randomID = Math.floor(Math.random() * 1e7 + 1);
+  res.redirect(`/${randomID}`);
+})
+
 app.get('/loaderio-f6b96c7f918883fd6437d4d3825900ee/', (req, res) => {
   var options = {
     root: path.join(__dirname)
@@ -55,6 +67,7 @@ app.get('/loaderio-f6b96c7f918883fd6437d4d3825900ee/', (req, res) => {
 app.get('/:id', (req, res) => {
   res.sendFile(path.resolve('public/dist/index.html'));
 });
+
 
 app.get('/morelikethis/:id', async (req, res) => {
   let id = req.params.id;
